@@ -1,18 +1,32 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useVehicleForm } from './src/state/useVehicleForm';
-import { Step1VehicleScreen, Step2VehicleScreen, Step3SummaryScreen, VehiclesListScreen } from './src/screens';
+import { StyleSheet, View } from "react-native";
+import { useVehicleForm } from "./src/state/useVehicleForm";
+import {
+  Step1VehicleScreen,
+  Step2VehicleScreen,
+  Step3SummaryScreen,
+  VehiclesScreen,
+} from "./src/screens";
 
 export default function App() {
   const {
     vehicle,
     vehicles,
     step,
+    mode,
     updateField,
+    goToStep,
     nextStep,
     prevStep,
-    registerVehicle,
+    submitVehicle,
+    deleteVehicle,
+    startEdit,
     startNew,
+    pageIndex,
+    pageSize,
+    totalElements,
+    totalPages,
+    setPage,
+    setPageSize,
   } = useVehicleForm();
 
   const renderContent = () => {
@@ -23,8 +37,10 @@ export default function App() {
             vehicle={vehicle}
             onChange={updateField}
             onNext={nextStep}
+            onMain={() => goToStep(3)}
           />
         );
+
       case 1:
         return (
           <Step2VehicleScreen
@@ -32,38 +48,45 @@ export default function App() {
             onChange={updateField}
             onBack={prevStep}
             onNext={nextStep}
+            onMain={() => goToStep(3)}
           />
         );
+
       case 2:
         return (
           <Step3SummaryScreen
             vehicle={vehicle}
             onBack={prevStep}
-            onRegister={registerVehicle}
+            submitVehicle={submitVehicle}
+            mode={mode}
           />
         );
+
       case 3:
         return (
-          <VehiclesListScreen
+          <VehiclesScreen
             vehicles={vehicles}
             onRegisterAnother={startNew}
+            onDelete={deleteVehicle}
+            onEdit={startEdit}
+            pageIndex={pageIndex}
+            totalPages={totalPages}
+            totalElements={totalElements}
+            pageSize={pageSize}
+            onPageChange={setPage}
+            onPageSizeChange={setPageSize}
           />
         );
+
       default:
         return null;
     }
   };
 
-  return (
-      <View style={styles.container}>{renderContent()}</View>
-  );
+  return <View style={styles.container}>{renderContent()}</View>;
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#f3f4f6',
-  },
   container: {
     flex: 1,
     padding: 16,

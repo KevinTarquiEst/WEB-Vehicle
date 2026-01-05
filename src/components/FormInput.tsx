@@ -1,4 +1,3 @@
-import React from "react";
 import {
   StyleSheet,
   Text,
@@ -23,7 +22,6 @@ export const FormInput = ({
   onChangeText,
   ...props
 }: FormInputProps) => {
-  // interceptamos el texto antes de enviarlo al padre
   const handleChange = (value: string) => {
     let finalValue = value;
     if (typeInput === "integer") finalValue = value.replaceAll(/\D/g, "");

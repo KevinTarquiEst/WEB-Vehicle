@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FormButton } from "../components";
 import { Vehicle } from "../models";
@@ -6,18 +5,19 @@ import { Vehicle } from "../models";
 type Step3SummaryScreenProps = {
   vehicle: Vehicle;
   onBack: () => void;
-  onRegister: () => void;
+  submitVehicle: () => void;
+  mode: "create" | "edit";
 };
 
 export const Step3SummaryScreen = ({
   vehicle,
   onBack,
-  onRegister,
+  submitVehicle,
+  mode,
 }: Step3SummaryScreenProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registro de un vehículo – Paso 3 de 3</Text>
-
       <View style={styles.card}>
         <Text style={styles.row}>Marca: {vehicle.brand}</Text>
         <Text style={styles.row}>Modelo: {vehicle.model}</Text>
@@ -27,8 +27,11 @@ export const Step3SummaryScreen = ({
         <Text style={styles.row}>Tipo de gasolina: {vehicle.fuelType}</Text>
       </View>
 
+      <FormButton
+        label={mode === "create" ? "Registrar vehículo" : "Actualizar vehículo"}
+        onPress={submitVehicle}
+      />
       <FormButton label="Regresar" onPress={onBack} />
-      <FormButton label="Registrar vehículo" onPress={onRegister} />
     </View>
   );
 };

@@ -14,7 +14,7 @@ type Page<T> = {
     content: T[];
     totalElements: number;
     totalPages: number;
-    number: number; // page actual (0-based)
+    number: number;
     size: number;
     first: boolean;
     last: boolean;
@@ -44,34 +44,33 @@ async function request<T>(
         throw new Error(`HTTP ${res.status} - ${text || res.statusText}`);
     }
 
-    // DELETE normalmente no retorna body
     if (method === "DELETE") return undefined as T;
 
     return (await res.json()) as T;
 }
 
 export const vehicleService = {
-    // 1) GET ALL (lista)
+    // GET ALL (lista)
     getAllList: () => request<VehicleDto[]>("/list", "GET"),
 
-    // 2) GET ALL (paginado) -> GET /v1/vehicles?page=0&size=10
+    // GET ALL (paginado)
     getAllPage: (params?: { page?: number; size?: number; sort?: string }) => {
         const page = params?.page ?? 0;
-        const size = params?.size ?? 10;
+        const size = params?.size ?? 5;
         const sort = params?.sort ? `&sort=${encodeURIComponent(params.sort)}` : "";
         return request<Page<VehicleDto>>(`?page=${page}&size=${size}${sort}`, "GET");
     },
 
-    // 3) GET BY ID
+
+    // GET BY ID
     getById: (id: number) => request<VehicleDto>(`/${id}`, "GET"),
 
-    // 4) POST
+    // POST
     create: (payload: VehicleCreateDto) => request<VehicleDto>("", "POST", payload),
 
-    // 5) PATCH
-    patch: (id: number, payload: VehiclePatchDto) =>
-        request<VehicleDto>(`/${id}`, "PATCH", payload),
+    // PATCH
+    patch: (id: number, payload: VehiclePatchDto) => request<VehicleDto>(`/${id}`, "PATCH", payload),
 
-    // 6) DELETE
+    // DELETE
     remove: (id: number) => request<void>(`/${id}`, "DELETE"),
 };

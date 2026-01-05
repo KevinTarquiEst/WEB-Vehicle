@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FormInput, FormButton } from "../components";
 import { Vehicle } from "../models";
@@ -8,6 +8,7 @@ type Step2VehicleScreenProps = {
   onChange: (field: keyof Vehicle, value: string) => void;
   onNext: () => void;
   onBack: () => void;
+  onMain: () => void;
 };
 
 export const Step2VehicleScreen = ({
@@ -15,6 +16,7 @@ export const Step2VehicleScreen = ({
   onChange,
   onNext,
   onBack,
+  onMain,
 }: Step2VehicleScreenProps) => {
   const [showErrors, setShowErrors] = useState(false);
   const plateEmpty = vehicle.plate.trim() === "";
@@ -81,8 +83,9 @@ export const Step2VehicleScreen = ({
         }
       />
 
-      <FormButton label="Regresar" onPress={onBack} />
       <FormButton label="Continuar" onPress={handleNext} />
+      <FormButton label="Regresar" onPress={onBack} />
+      <FormButton label="Volver al menú principal" onPress={onMain} />
     </View>
   );
 };

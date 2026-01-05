@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FormInput, FormButton } from "../components";
 import { Vehicle } from "../models";
@@ -7,12 +7,14 @@ type Step1VehicleScreenProps = {
   vehicle: Vehicle;
   onChange: (field: keyof Vehicle, value: string) => void;
   onNext: () => void;
+  onMain: () => void;
 };
 
 export const Step1VehicleScreen = ({
   vehicle,
   onChange,
   onNext,
+  onMain,
 }: Step1VehicleScreenProps) => {
   const [showErrors, setShowErrors] = useState(false);
   const brandEmpty = vehicle.brand.trim() === "";
@@ -51,6 +53,7 @@ export const Step1VehicleScreen = ({
       />
 
       <FormButton label="Continuar" onPress={handleNext} />
+      <FormButton label="Volver al menú principal" onPress={onMain} />
     </View>
   );
 };
